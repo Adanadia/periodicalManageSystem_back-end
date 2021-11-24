@@ -16,7 +16,6 @@ public class JWTInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         CommonResponse commonResponse;
         String token = request.getHeader("authorization");//请求头中的token
-
         try{
             JWTUtils.verify(token);
             //commonResponse = CommonResponse.createForSuccess("请求成功",token);
