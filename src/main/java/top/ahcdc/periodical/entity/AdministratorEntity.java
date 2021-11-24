@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @TableName(value = "administrator")
-public class administratorEntity {
+public class AdministratorEntity {
     @TableId(value = "id",type = IdType.INPUT)
     private String id;
     @TableField(value = "password")
