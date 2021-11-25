@@ -5,5 +5,5 @@ import top.ahcdc.periodical.vo.UserMainPageVO;
 
 @Service
 public interface UserMainPageService {
-    public UserMainPageVO getMainPageInfo(String userNum);
+    UserMainPageVO getMainPageInfo(String userNum);
 }

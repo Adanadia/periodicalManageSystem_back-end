@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class UserMainPageVO {
-    private List<PeriodicalVO> periodical;
-    private UserInfoVO user_table;
+        private List<PeriodicalVO> periodical;
+        private UserInfoVO user_table;
 }

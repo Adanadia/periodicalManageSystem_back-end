@@ -9,6 +9,6 @@ import lombok.*;
 public class UserInfoVO {
     private String userNum;
     private String userProfile;
-    private String balance;
+    private double balance;
     private String userEmail;
 }

@@ -22,7 +22,7 @@ public class UserEntity {
     @TableField(value = "password")
     private String password;
     @TableField(value = "balance")
-    private String balance;
+    private double balance;
     @TableField(value = "user_profile")
     private String userProfiles;
 }
