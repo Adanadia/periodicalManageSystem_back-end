@@ -47,4 +47,8 @@ public class JWTUtils {
         DecodedJWT verify = JWT.require(Algorithm.HMAC384(SING)).build().verify(token);
         return verify;
     }
+//    public static Map<String,String> ParseJWT(String token){
+//        DecodedJWT decode = JWT.decode(token);
+//        decode
+//    }
 }

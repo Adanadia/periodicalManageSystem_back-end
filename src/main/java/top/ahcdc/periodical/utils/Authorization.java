@@ -1,4 +1,4 @@
-package top.ahcdc.periodical.vo;
+package top.ahcdc.periodical.utils;
 
 import lombok.*;
 

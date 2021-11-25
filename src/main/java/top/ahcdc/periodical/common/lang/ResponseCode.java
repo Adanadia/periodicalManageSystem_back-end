@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum ResponseCode {
-    SUCCESS(200,"SUCCESS"),
-    ERROR(400,"ERROR"),
-    NEED_LOGIN(401,"NEED_LOGIN"),
-    ILLEGAL_ARGUMENT(402,"ILLEGAL_ARGUMENT");
+    SUCCESS(0,"SUCCESS"),
+    ERROR(1,"ERROR"),
+    NEED_LOGIN(10,"NEED_LOGIN"),
+    ILLEGAL_ARGUMENT(20,"ILLEGAL_ARGUMENT");
 
     private final int code;
     private final String description;

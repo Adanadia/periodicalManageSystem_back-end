@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @TableName(value = "periodical_content")
-public class periodicalContentEntity {
+public class PeriodicalContentEntity {
     @TableField(value = "periodical_name")
     private String periodicalName;
     @TableField(value = "paper_title")

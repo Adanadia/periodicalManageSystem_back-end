@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @TableName(value = "periodical_catalogue")
-public class periodicalCatalogueEntity {
+public class PeriodicalCatalogueEntity {
     @TableId(value = "periodical_name",type = IdType.INPUT)
     private String periodicalName;
     @TableField(value = "ISSN")
