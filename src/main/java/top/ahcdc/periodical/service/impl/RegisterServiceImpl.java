@@ -14,8 +14,8 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public void insertUser(RegisterForm registerForm) {
         userMapper.insert(new UserEntity(
-                registerForm.getUserNum(),
-                registerForm.getUserName(),
+                registerForm.getUser_num(),
+                registerForm.getUser_name(),
                 registerForm.getEmail(),
                 registerForm.getPassword(),
                 0.00,
