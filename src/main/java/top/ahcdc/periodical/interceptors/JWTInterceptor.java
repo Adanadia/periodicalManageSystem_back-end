@@ -3,6 +3,7 @@ package top.ahcdc.periodical.interceptors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import top.ahcdc.periodical.common.lang.CommonResponse;
 import top.ahcdc.periodical.utils.JWTUtils;
 

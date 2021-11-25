@@ -1,7 +1,6 @@
 package top.ahcdc.periodical.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.jeffreyning.mybatisplus.anno.MppMultiId;
 import lombok.*;
 
 @Setter
@@ -11,10 +10,8 @@ import lombok.*;
 @Data
 @TableName(value = "periodical_content")
 public class periodicalContentEntity {
-    @MppMultiId
     @TableField(value = "periodical_name")
     private String periodicalName;
-    @MppMultiId
     @TableField(value = "paper_title")
     private String paperTitle;
     @TableField(value = "volume")
