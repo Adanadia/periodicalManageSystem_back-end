@@ -7,4 +7,5 @@ import top.ahcdc.periodical.entity.UserEntity;
 
 @Mapper
 public interface UserMapper extends BaseMapper<UserEntity>{
+
 }

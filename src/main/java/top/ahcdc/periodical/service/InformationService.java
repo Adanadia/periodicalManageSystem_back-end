@@ -4,6 +4,6 @@ import org.springframework.stereotype.Service;
 import top.ahcdc.periodical.vo.UserMainPageVO;
 
 @Service
-public interface UserMainPageService {
+public interface InformationService {
     UserMainPageVO getMainPageInfo(String userNum);
 }

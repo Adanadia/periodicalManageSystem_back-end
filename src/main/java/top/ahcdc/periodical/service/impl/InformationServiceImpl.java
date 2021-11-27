@@ -8,7 +8,7 @@ import top.ahcdc.periodical.mapper.BorrowTableMapper;
 import top.ahcdc.periodical.mapper.PeriodicalCatalogueMapper;
 import top.ahcdc.periodical.mapper.PeriodicalRegisterMapper;
 import top.ahcdc.periodical.mapper.UserMapper;
-import top.ahcdc.periodical.service.UserMainPageService;
+import top.ahcdc.periodical.service.InformationService;
 import top.ahcdc.periodical.vo.UserMainPageVO;
 import top.ahcdc.periodical.vo.integration.PeriodicalVO;
 import top.ahcdc.periodical.vo.integration.UserInfoVO;
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class UserMainPageServiceImpl implements UserMainPageService {
+public class InformationServiceImpl implements InformationService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
