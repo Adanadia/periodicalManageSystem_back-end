@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @TableName(value = "periodical_subscription")
-public class periodicalSubscriptionEntity {
+public class PeriodicalSubscriptionEntity {
     @TableField(value = "mail_code")
     private String mailCode;
     @TableField(value = "periodical_name")
