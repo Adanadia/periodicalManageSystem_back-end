@@ -27,7 +27,7 @@ public class BorrowController {
     @CrossOrigin
     @GetMapping("/borrow/search/{search_content}/{type}")
     public CommonResponse<PeriodicalNotBorrowVO> borrowSearch(@PathVariable("search_content") String searchContent,
-                                                              @PathVariable("type") String type){
-        return null;
+                                                              @PathVariable("type") int type){
+
     }
 }

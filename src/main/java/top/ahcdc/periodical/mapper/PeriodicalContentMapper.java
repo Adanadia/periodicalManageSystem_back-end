@@ -1,6 +1,8 @@
 package top.ahcdc.periodical.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-public interface PeriodicalContentMapper extends BaseMapper<PeriodicalContentMapper> {
+import org.apache.ibatis.annotations.Mapper;
+import top.ahcdc.periodical.entity.PeriodicalContentEntity;
+@Mapper
+public interface PeriodicalContentMapper extends BaseMapper<PeriodicalContentEntity> {
 }
