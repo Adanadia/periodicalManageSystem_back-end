@@ -1,6 +1,7 @@
 package top.ahcdc.periodical.service;
 
 import org.springframework.stereotype.Service;
+import top.ahcdc.periodical.entity.PeriodicalContentEntity;
 import top.ahcdc.periodical.vo.BorrowPageVO;
 import top.ahcdc.periodical.vo.integration.PeriodicalNotBorrowVO;
 
@@ -10,4 +11,7 @@ import java.util.List;
 public interface BorrowService {
     BorrowPageVO getBorrowPageInfo(String userNum);
     String getCover(String name,int year,int volume,int stage);
+    List<PeriodicalNotBorrowVO> getNotBorrow();//未借出的期刊
+    List<PeriodicalNotBorrowVO> BorrowSearch(int type,String search_content);
+    PeriodicalContentEntity detailDisp(String pName, int year, int volume, int stage);
 }
