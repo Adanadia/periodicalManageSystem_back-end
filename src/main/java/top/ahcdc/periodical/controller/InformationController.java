@@ -21,9 +21,4 @@ public class InformationController {
         UserMainPageVO mainPageInfo = informationService.getMainPageInfo(userNum);
         return CommonResponse.createForSuccess(mainPageInfo);
     }
-//    @CrossOrigin
-//    @PutMapping('/information/return')
-//    public CommonResponse<String> PeriodicalReturn(){
-//
-//    }
 }
