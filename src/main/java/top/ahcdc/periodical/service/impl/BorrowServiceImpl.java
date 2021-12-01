@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.assist.ISqlRunner;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.ahcdc.periodical.common.lang.CommonResponse;
 import top.ahcdc.periodical.entity.BorrowTabelEntity;
 import top.ahcdc.periodical.entity.PeriodicalContentEntity;
 import top.ahcdc.periodical.entity.PeriodicalRegisterEntity;
@@ -13,10 +14,10 @@ import top.ahcdc.periodical.mapper.PeriodicalContentMapper;
 import top.ahcdc.periodical.mapper.PeriodicalRegisterMapper;
 import top.ahcdc.periodical.mapper.UserMapper;
 import top.ahcdc.periodical.service.BorrowService;
+import top.ahcdc.periodical.utils.CalendarString;
 import top.ahcdc.periodical.vo.BorrowPageVO;
 import top.ahcdc.periodical.vo.integration.PeriodicalNotBorrowVO;
 import top.ahcdc.periodical.vo.integration.UserInfoVO;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,7 @@ public class BorrowServiceImpl implements BorrowService {
     private UserMapper userMapper;
     @Autowired
     private PeriodicalContentMapper periodicalContentMapper;
+    private CalendarString calendarString=new CalendarString();
     @Override
     public BorrowPageVO getBorrowPageInfo(String userNum) {
         List<PeriodicalNotBorrowVO> ret = getNotBorrow();
@@ -145,7 +147,8 @@ public class BorrowServiceImpl implements BorrowService {
         return periodicalContentEntity;
     }
     @Override
-    public boolean borrowBooks(String pName,String userNum,int year,int stage,int volume) {
+    public CommonResponse<Object> borrowBooks(String pName, String userNum, int year, int stage, int volume) {
+        UserEntity userEntityForUpdate=new UserEntity();
         QueryWrapper<PeriodicalRegisterEntity> periodicalRegisterQueryWrapper = new QueryWrapper<>();
         QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
         periodicalRegisterQueryWrapper.eq("periodical_name", pName)
@@ -155,28 +158,18 @@ public class BorrowServiceImpl implements BorrowService {
         PeriodicalRegisterEntity periodicalRegisterEntity=periodicalRegisterMapper.selectOne(periodicalRegisterQueryWrapper);
         userQueryWrapper.eq("user_num", userNum);
         UserEntity userEntity=userMapper.selectOne(userQueryWrapper);
-        if(userEntity.getBalance()<periodicalRegisterEntity.getDeposit()) return false;
+        if(userEntity.getBalance()<periodicalRegisterEntity.getDeposit()) return CommonResponse.createForError("余额不足，无法借阅！");
         else{
             Calendar current=Calendar.getInstance();
-            Calendar term=current;
+            Calendar term=Calendar.getInstance();
             term.add(Calendar.DATE,30);
             borrowTableMapper.insert(new BorrowTabelEntity(volume, year, stage,
-               userNum, pName, CToS(current), CToS(term), null));
-            return true;
+                pName,userNum, calendarString.CToS(current), calendarString.CToS(term), null));
+            userEntityForUpdate.setBalance(userEntity.getBalance()-periodicalRegisterEntity.getDeposit());
+            userMapper.update(userEntityForUpdate,userQueryWrapper);
+            return CommonResponse.createForSuccessMessage("借阅成功！已扣除押金！");
         }
     }
-    @Override
-    public String CToS(Calendar c){
-        String str=new String();
-        str=Integer.toString(c.get(Calendar.YEAR))+"-"+Integer.toString(c.get(Calendar.MONTH))+"-"+Integer.toString((c.get(Calendar.DATE)));
-        return str;
-    }
 
-    public Calendar SToC(String s) throws ParseException {
-        Calendar ca=new GregorianCalendar();
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-        Date day=df.parse(s);
-        ca.setTime(day);
-        return ca;
-    }
+
 }
