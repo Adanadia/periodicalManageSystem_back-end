@@ -25,8 +25,8 @@ public class UserLoginController {
                                             @RequestParam("password") String password,
                                             HttpServletResponse response){
         UserEntity user = userLoginService.getPasswordByUserNum(userNum);
-        if(user == null){
-            return CommonResponse.createForError("没找到用户信息");
+        if(user==null){
+            return CommonResponse.createForError("输入账号有误");
         }
         Map<String,String> userInfoMap = new HashMap<>();
         if(user.getPassword().equals(password)){
@@ -37,7 +37,7 @@ public class UserLoginController {
             response.setHeader("Authorization",token);
             return CommonResponse.createForSuccess("登录成功",new Authorization(token));
         }
-        return CommonResponse.createForError();
+        return CommonResponse.createForError("密码有误");
     }
     @CrossOrigin
     @PostMapping("/userlogin/register")

@@ -1,5 +1,6 @@
 package top.ahcdc.periodical.service.impl;
 
+import com.baomidou.mybatisplus.core.assist.ISqlRunner;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,10 @@ import top.ahcdc.periodical.vo.BorrowPageVO;
 import top.ahcdc.periodical.vo.integration.PeriodicalNotBorrowVO;
 import top.ahcdc.periodical.vo.integration.UserInfoVO;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class BorrowServiceImpl implements BorrowService {
@@ -100,7 +102,8 @@ public class BorrowServiceImpl implements BorrowService {
                     periodicalRegisterEntity.getPeriodicalCover(),
                     periodicalRegisterEntity.getVolume(),
                     periodicalRegisterEntity.getYear(),
-                    periodicalRegisterEntity.getStage()
+                    periodicalRegisterEntity.getStage(),
+                    periodicalRegisterEntity.getDeposit()
             ));
         }
         for(BorrowTabelEntity borrowTabelEntity:borrowTabelEntityList){
@@ -112,7 +115,8 @@ public class BorrowServiceImpl implements BorrowService {
                             borrowTabelEntity.getStage()),
                     borrowTabelEntity.getVolume(),
                     borrowTabelEntity.getYear(),
-                    borrowTabelEntity.getStage()
+                    borrowTabelEntity.getStage(),
+                    0
             ));
         }
         List<PeriodicalNotBorrowVO> ret = new LinkedList<>();
@@ -139,5 +143,40 @@ public class BorrowServiceImpl implements BorrowService {
                 .eq("stage",stage);
         PeriodicalContentEntity periodicalContentEntity= periodicalContentMapper.selectOne(detailQuerywrapper);
         return periodicalContentEntity;
+    }
+    @Override
+    public boolean borrowBooks(String pName,String userNum,int year,int stage,int volume) {
+        QueryWrapper<PeriodicalRegisterEntity> periodicalRegisterQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
+        periodicalRegisterQueryWrapper.eq("periodical_name", pName)
+                .eq("year", year)
+                .eq("stage", stage)
+                .eq("volume", volume);
+        PeriodicalRegisterEntity periodicalRegisterEntity=periodicalRegisterMapper.selectOne(periodicalRegisterQueryWrapper);
+        userQueryWrapper.eq("user_num", userNum);
+        UserEntity userEntity=userMapper.selectOne(userQueryWrapper);
+        if(userEntity.getBalance()<periodicalRegisterEntity.getDeposit()) return false;
+        else{
+            Calendar current=Calendar.getInstance();
+            Calendar term=current;
+            term.add(Calendar.DATE,30);
+            borrowTableMapper.insert(new BorrowTabelEntity(volume, year, stage,
+               userNum, pName, CToS(current), CToS(term), null));
+            return true;
+        }
+    }
+    @Override
+    public String CToS(Calendar c){
+        String str=new String();
+        str=Integer.toString(c.get(Calendar.YEAR))+"-"+Integer.toString(c.get(Calendar.MONTH))+"-"+Integer.toString((c.get(Calendar.DATE)));
+        return str;
+    }
+
+    public Calendar SToC(String s) throws ParseException {
+        Calendar ca=new GregorianCalendar();
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        Date day=df.parse(s);
+        ca.setTime(day);
+        return ca;
     }
 }

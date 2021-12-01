@@ -46,5 +46,18 @@ public class BorrowController {
 
          return CommonResponse.createForSuccess(borrowService.detailDisp(pName,year,volume,stage)) ;
     }//必须保证前端传过来的是未被借出的期刊信息
+    @CrossOrigin
+    @PostMapping("/borrow/search/borrowbooks")
+        public CommonResponse<Object> borrowBooks(@RequestParam("periodical_name") String pName,@RequestParam("volume") int volume,
+                                                  @RequestParam("stage") int stage,@RequestParam("year") int year,
+                                                  @RequestHeader("Authorization") String token){
+        DecodedJWT tokenInfo = JWTUtils.getTokenInfo(token);
+        String userNum = tokenInfo.getClaim("userNum").asString();
+        if(borrowService.borrowBooks(pName,userNum,year,stage,volume)){
+            return CommonResponse.createForSuccessMessage("借阅成功");
+        }
+        else return CommonResponse.createForError("借阅失败，余额不足！");
+    }
+
 
 }
