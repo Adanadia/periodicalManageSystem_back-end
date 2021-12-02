@@ -22,4 +22,6 @@ public class PeriodicalRegisterEntity {
     private int stage;
     @TableField(value = "periodical_cover")
     private String periodicalCover;
+    @TableField(value = "deposit")
+    private double deposit;
 }

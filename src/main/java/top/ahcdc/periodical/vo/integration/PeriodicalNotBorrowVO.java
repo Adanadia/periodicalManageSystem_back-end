@@ -13,4 +13,5 @@ public class PeriodicalNotBorrowVO {
     private int volume;
     private int year;
     private int stage;
+    private double deposit;
 }
