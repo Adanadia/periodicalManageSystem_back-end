@@ -20,7 +20,7 @@ public class UserLoginController {
     @Autowired
     private UserLoginService userLoginService;
     @CrossOrigin
-    @PostMapping("/userLogin")
+    @PostMapping("/userlogin")
     public CommonResponse<Authorization> userLogin(@RequestParam("user_num") String userNum,
                                             @RequestParam("password") String password,
                                             HttpServletResponse response){

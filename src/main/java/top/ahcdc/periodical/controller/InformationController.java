@@ -16,9 +16,16 @@ public class InformationController {
     @CrossOrigin
     @GetMapping("/information")
     public CommonResponse<UserMainPageVO> MainPage(@RequestHeader("Authorization") String token){
-        DecodedJWT tokenInfo = JWTUtils.getTokenInfo(token);
-        String userNum = tokenInfo.getClaim("userNum").asString();
-        UserMainPageVO mainPageInfo = informationService.getMainPageInfo(userNum);
+        DecodedJWT tokenInfo = null;
+        String userNum = null;
+        UserMainPageVO mainPageInfo = null;
+        try{
+            tokenInfo = JWTUtils.getTokenInfo(token);
+            userNum = tokenInfo.getClaim("userNum").asString();
+            mainPageInfo = informationService.getMainPageInfo(userNum);
+        }catch (NullPointerException e){
+            return CommonResponse.createForError("用户不存在");
+        }
         return CommonResponse.createForSuccess(mainPageInfo);
     }
 }

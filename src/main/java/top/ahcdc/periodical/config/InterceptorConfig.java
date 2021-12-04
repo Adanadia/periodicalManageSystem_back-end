@@ -8,8 +8,8 @@ import top.ahcdc.periodical.interceptors.JWTInterceptor;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
     private static final String[] EXCLUDE_PATHS = {
-            "/userLogin",
-            "/userLogin/**",
+            "/userlogin",
+            "/userlogin/**",
             "/"
     };
     @Override
