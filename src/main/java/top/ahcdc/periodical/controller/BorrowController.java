@@ -54,10 +54,14 @@ public class BorrowController {
     @PostMapping("/borrow/search/borrowbooks")
     public CommonResponse<Object> borrowBooks(@RequestParam("periodical_name") String pName, @RequestParam("volume") int volume,
                                               @RequestParam("stage") int stage, @RequestParam("year") int year,
-                                              @RequestHeader("Authorization") String token) {
+                                              @RequestHeader("Authorization") String token,@RequestParam("access") boolean access) {
         DecodedJWT tokenInfo = JWTUtils.getTokenInfo(token);
         String userNum = tokenInfo.getClaim("userNum").asString();
         System.out.println(userNum);
-        return borrowService.borrowBooks(pName, userNum, year, stage, volume);
+        if(access==true) {
+            borrowService.borrowBooks(pName, userNum, year, stage, volume);
+            return CommonResponse.createForSuccessMessage("借阅成功！已扣除押金！");
+        }
+        else return CommonResponse.createForError("借阅失败！余额不足！");
     }
 }

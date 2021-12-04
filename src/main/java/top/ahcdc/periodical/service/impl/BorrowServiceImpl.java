@@ -147,29 +147,23 @@ public class BorrowServiceImpl implements BorrowService {
         return periodicalContentEntity;
     }
     @Override
-    public CommonResponse<Object> borrowBooks(String pName, String userNum, int year, int stage, int volume) {
-        UserEntity userEntityForUpdate=new UserEntity();
+    public void borrowBooks(String pName, String userNum, int year, int stage, int volume) {
+        UserEntity userEntityForUpdate = new UserEntity();
         QueryWrapper<PeriodicalRegisterEntity> periodicalRegisterQueryWrapper = new QueryWrapper<>();
         QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
         periodicalRegisterQueryWrapper.eq("periodical_name", pName)
                 .eq("year", year)
                 .eq("stage", stage)
                 .eq("volume", volume);
-        PeriodicalRegisterEntity periodicalRegisterEntity=periodicalRegisterMapper.selectOne(periodicalRegisterQueryWrapper);
+        PeriodicalRegisterEntity periodicalRegisterEntity = periodicalRegisterMapper.selectOne(periodicalRegisterQueryWrapper);
         userQueryWrapper.eq("user_num", userNum);
-        UserEntity userEntity=userMapper.selectOne(userQueryWrapper);
-        if(userEntity.getBalance()<periodicalRegisterEntity.getDeposit()) return CommonResponse.createForError("余额不足，无法借阅！");
-        else{
-            Calendar current=Calendar.getInstance();
-            Calendar term=Calendar.getInstance();
-            term.add(Calendar.DATE,30);
+        UserEntity userEntity = userMapper.selectOne(userQueryWrapper);
+            Calendar current = Calendar.getInstance();
+            Calendar term = Calendar.getInstance();
+            term.add(Calendar.DATE, 30);
             borrowTableMapper.insert(new BorrowTabelEntity(volume, year, stage,
-                pName,userNum, calendarString.CToS(current), calendarString.CToS(term), null));
-            userEntityForUpdate.setBalance(userEntity.getBalance()-periodicalRegisterEntity.getDeposit());
-            userMapper.update(userEntityForUpdate,userQueryWrapper);
-            return CommonResponse.createForSuccessMessage("借阅成功！已扣除押金！");
-        }
+                    pName, userNum, calendarString.CToS(current), calendarString.CToS(term), null));
+            userEntityForUpdate.setBalance(userEntity.getBalance() - periodicalRegisterEntity.getDeposit());
+            userMapper.update(userEntityForUpdate, userQueryWrapper);
     }
-
-
 }
