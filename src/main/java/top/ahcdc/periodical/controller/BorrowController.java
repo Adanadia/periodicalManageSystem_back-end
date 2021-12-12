@@ -51,17 +51,15 @@ public class BorrowController {
     }//必须保证前端传过来的是未被借出的期刊信息
 
     @CrossOrigin
-    @PostMapping("/borrow/search/borrowbooks")
+    @PostMapping("/borrow/search/borrowbooks")//默认前端传来的数据为未借出的且余额充足
     public CommonResponse<Object> borrowBooks(@RequestParam("periodical_name") String pName, @RequestParam("volume") int volume,
                                               @RequestParam("stage") int stage, @RequestParam("year") int year,
-                                              @RequestHeader("Authorization") String token,@RequestParam("access") boolean access) {
+                                              @RequestHeader("Authorization") String token) {
         DecodedJWT tokenInfo = JWTUtils.getTokenInfo(token);
         String userNum = tokenInfo.getClaim("userNum").asString();
-        System.out.println(userNum);
-        if(access==true) {
-            borrowService.borrowBooks(pName, userNum, year, stage, volume);
-            return CommonResponse.createForSuccessMessage("借阅成功！已扣除押金！");
-        }
-        else return CommonResponse.createForError("借阅失败！余额不足！");
+//        System.out.println(userNum);
+        borrowService.borrowBooks(pName, userNum, year, stage, volume);
+        return CommonResponse.createForSuccessMessage("借阅成功！已扣除押金！");
     }
+
 }
