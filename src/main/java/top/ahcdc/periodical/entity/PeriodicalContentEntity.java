@@ -32,4 +32,6 @@ public class PeriodicalContentEntity {
     private String paperKeyword5;
     @TableField(value = "periodical_page")
     private String periodicalPage;
+    @TableField(value="paper_author")
+    private String paperAuthor;
 }

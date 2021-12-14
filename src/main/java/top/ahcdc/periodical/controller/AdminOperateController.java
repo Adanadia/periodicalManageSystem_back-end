@@ -1,10 +1,7 @@
 package top.ahcdc.periodical.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.ahcdc.periodical.common.lang.CommonResponse;
 import top.ahcdc.periodical.entity.PeriodicalSubscriptionEntity;
 import top.ahcdc.periodical.mapper.PeriodicalSubscriptionMapper;
@@ -16,9 +13,10 @@ public class AdminOperateController {
     AdminOperateService adminOperateService;
     @CrossOrigin
     @PostMapping("/admin/subscribe")
-    public CommonResponse<Object> Subscribe(@RequestParam("mailing_code") String mailing_code,@RequestParam("ISSN") String ISSN,@RequestParam("CN") String CN,
-                                            @RequestParam("periodical_name") String periodical_name,@RequestParam("subscription_year") int subscription_year,
-                                            @RequestParam("public_cycle") String public_cycle){
+    public CommonResponse<Object> Subscribe(
+            @RequestParam("mailing_code") String mailing_code, @RequestParam("ISSN") String ISSN, @RequestParam("CN") String CN,
+            @RequestParam("periodical_name") String periodical_name, @RequestParam("subscription_year") int subscription_year,
+            @RequestParam("public_cycle") String public_cycle){
         if(subscription_year<2021){
            return CommonResponse.createForError("不能征订以前的期刊");
         }

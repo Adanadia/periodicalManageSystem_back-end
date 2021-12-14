@@ -43,7 +43,7 @@ public class BorrowController {
 
     @CrossOrigin
     @GetMapping("/borrow/search/detail/{periodical_name}/{year}/{volume}/{stage}")
-    public CommonResponse<PeriodicalContentEntity> periodicalDetailDisp(@PathVariable("periodical_name") String pName,
+    public CommonResponse<List<PeriodicalContentEntity>> periodicalDetailDisp(@PathVariable("periodical_name") String pName,
                                                                         @PathVariable("year") int year, @PathVariable("volume") int volume,
                                                                         @PathVariable("stage") int stage) {
 
@@ -61,5 +61,4 @@ public class BorrowController {
         borrowService.borrowBooks(pName, userNum, year, stage, volume);
         return CommonResponse.createForSuccessMessage("借阅成功！已扣除押金！");
     }
-
 }

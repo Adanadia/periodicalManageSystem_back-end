@@ -69,11 +69,13 @@ public class BorrowServiceImpl implements BorrowService {
             }
         }
         else if(type==2){
-            periodicalContentQuery.eq("paper_author",search_content);
+            periodicalContentQuery.like("paper_author",search_content);
             periodicalContentEntities=periodicalContentMapper.selectList(periodicalContentQuery);
             for(PeriodicalNotBorrowVO periodicalNotBorrowVO:ret){
                 for(PeriodicalContentEntity periodicalContentEntity:periodicalContentEntities){
-                    if(periodicalNotBorrowVO.getPeriodicalName().equals(periodicalContentEntity.getPeriodicalName())){
+                    if(periodicalNotBorrowVO.getPeriodicalName().equals(periodicalContentEntity.getPeriodicalName())&&
+                    periodicalNotBorrowVO.getStage()==periodicalContentEntity.getStage()&&periodicalNotBorrowVO.getVolume()==periodicalContentEntity.getVolume()&&
+                    periodicalNotBorrowVO.getYear()==periodicalContentEntity.getYear()){
                         searchRes.add(periodicalNotBorrowVO);
                         break;
                     }
@@ -99,6 +101,7 @@ public class BorrowServiceImpl implements BorrowService {
         List<PeriodicalNotBorrowVO> all = new LinkedList<>();
         List<PeriodicalNotBorrowVO> borrowed = new LinkedList<>();
         for(PeriodicalRegisterEntity periodicalRegisterEntity:periodicalRegisterEntityList){
+
             all.add(new PeriodicalNotBorrowVO(
                     periodicalRegisterEntity.getPeriodicalName(),
                     periodicalRegisterEntity.getPeriodicalCover(),
@@ -109,6 +112,7 @@ public class BorrowServiceImpl implements BorrowService {
             ));
         }
         for(BorrowTabelEntity borrowTabelEntity:borrowTabelEntityList){
+            if(!(borrowTabelEntity.getReturnDate()==null||borrowTabelEntity.getReturnDate().isBlank())) continue;
             borrowed.add(new PeriodicalNotBorrowVO(
                     borrowTabelEntity.getPeriodicalName(),
                     getCover(borrowTabelEntity.getPeriodicalName(),
@@ -137,14 +141,14 @@ public class BorrowServiceImpl implements BorrowService {
         }
        return ret;
     }
-    public PeriodicalContentEntity detailDisp(String pName, int year, int volume, int stage){
+    public List<PeriodicalContentEntity> detailDisp(String pName, int year, int volume, int stage){
         QueryWrapper<PeriodicalContentEntity> detailQuerywrapper=new QueryWrapper<>();
         detailQuerywrapper.eq("periodical_name",pName)
                 .eq("volume",volume)
                 .eq("year",year)
                 .eq("stage",stage);
-        PeriodicalContentEntity periodicalContentEntity= periodicalContentMapper.selectOne(detailQuerywrapper);
-        return periodicalContentEntity;
+        List<PeriodicalContentEntity> periodicalContentEntities= periodicalContentMapper.selectList(detailQuerywrapper);
+        return periodicalContentEntities;
     }
     @Override
     public void borrowBooks(String pName, String userNum, int year, int stage, int volume) {

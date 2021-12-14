@@ -17,6 +17,7 @@ import top.ahcdc.periodical.utils.CalendarString;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class InformationServiceImpl implements InformationService {
@@ -37,6 +38,9 @@ public class InformationServiceImpl implements InformationService {
 
         List<PeriodicalVO> periodicalVOList = new LinkedList<>();
         for(BorrowTabelEntity list:userBorrowList){
+            if(!(list.getReturnDate() == null || list.getReturnDate().isBlank())) {
+                continue;
+            }
             QueryWrapper<PeriodicalCatalogueEntity> catalogueEntityQueryWrapper = new QueryWrapper<>();
             catalogueEntityQueryWrapper.eq("periodical_name",list.getPeriodicalName());
             QueryWrapper<PeriodicalRegisterEntity> registerEntityQueryWrapper = new QueryWrapper<>();
@@ -55,11 +59,6 @@ public class InformationServiceImpl implements InformationService {
                     )
             );
         }
-        int pos=0;
-        for(BorrowTabelEntity borrowTabelEntity:userBorrowList){
-            if(borrowTabelEntity.getReturnDate()!=null) userBorrowList.remove(pos);
-            pos++;
-        }//将借阅表中的已经归还的期刊删除
         QueryWrapper<UserEntity> userInfoQuery = new QueryWrapper<>();
         userInfoQuery.eq("user_num",userNum);
         UserEntity user = userMapper.selectOne(userInfoQuery);

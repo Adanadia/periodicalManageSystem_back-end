@@ -16,6 +16,6 @@ public interface BorrowService {
     String getCover(String name,int year,int volume,int stage);
     List<PeriodicalNotBorrowVO> getNotBorrow();//未借出的期刊
     List<PeriodicalNotBorrowVO> BorrowSearch(int type,String search_content);
-    PeriodicalContentEntity detailDisp(String pName, int year, int volume, int stage);
+    List<PeriodicalContentEntity> detailDisp(String pName, int year, int volume, int stage);
     void borrowBooks(String pNname, String userNum, int year, int stage, int volume);
 }
