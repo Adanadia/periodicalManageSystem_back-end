@@ -4,13 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.ahcdc.periodical.entity.*;
-import top.ahcdc.periodical.mapper.BorrowTableMapper;
-import top.ahcdc.periodical.mapper.PeriodicalCatalogueMapper;
-import top.ahcdc.periodical.mapper.PeriodicalRegisterMapper;
-import top.ahcdc.periodical.mapper.UserMapper;
+import top.ahcdc.periodical.mapper.*;
 import top.ahcdc.periodical.service.InformationService;
 import top.ahcdc.periodical.vo.UserMainPageVO;
 import top.ahcdc.periodical.vo.integration.PeriodicalVO;
+import top.ahcdc.periodical.vo.integration.ReserveVO;
 import top.ahcdc.periodical.vo.integration.UserInfoVO;
 import top.ahcdc.periodical.utils.CalendarString;
 
@@ -29,14 +27,24 @@ public class InformationServiceImpl implements InformationService {
     private PeriodicalRegisterMapper registerMapper;
     @Autowired
     private PeriodicalCatalogueMapper catalogueMapper;
+    @Autowired
+    private PeriodicalReserveMapper periodicalReserveMapper;
     private CalendarString calendarString= new CalendarString();
     @Override
     public UserMainPageVO getMainPageInfo(String userNum){
         QueryWrapper<BorrowTabelEntity> borrowQueryWrapper= new QueryWrapper<>();
+        QueryWrapper<PeriodicalReserveEntity> periodicalReserveQueryWrapper=new QueryWrapper<>();
+        periodicalReserveQueryWrapper.eq("user_num",userNum);
         borrowQueryWrapper.eq("user_num",userNum);
         List<BorrowTabelEntity> userBorrowList = borrowTableMapper.selectList(borrowQueryWrapper);
-
+        List<PeriodicalReserveEntity> userReserveList=periodicalReserveMapper.selectList(periodicalReserveQueryWrapper);
         List<PeriodicalVO> periodicalVOList = new LinkedList<>();
+        List<ReserveVO> reserveVOList=new LinkedList<>();
+        for(PeriodicalReserveEntity entity:userReserveList){
+            reserveVOList.add(
+                    new ReserveVO(entity.getPeriodicalName(),entity.getReserveDate(),entity.getVolume(),entity.getYear(),entity.getStage())
+            );
+        }
         for(BorrowTabelEntity list:userBorrowList){
             if(!(list.getReturnDate() == null || list.getReturnDate().isBlank())) {
                 continue;
@@ -68,7 +76,7 @@ public class InformationServiceImpl implements InformationService {
                 user.getBalance(),
                 user.getUserEmail()
         );
-        return new UserMainPageVO(periodicalVOList,userInfo);
+        return new UserMainPageVO(periodicalVOList,userInfo,reserveVOList);
     }
     @Override
     public String returnPeriodical(String periodical_name,int stage,int volume,int year,String user_num){

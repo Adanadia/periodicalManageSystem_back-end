@@ -2,6 +2,7 @@ package top.ahcdc.periodical.vo;
 
 import lombok.*;
 import top.ahcdc.periodical.vo.integration.PeriodicalVO;
+import top.ahcdc.periodical.vo.integration.ReserveVO;
 import top.ahcdc.periodical.vo.integration.UserInfoVO;
 
 import java.util.List;
@@ -14,4 +15,5 @@ import java.util.List;
 public class UserMainPageVO {
         private List<PeriodicalVO> periodical;
         private UserInfoVO user_table;
+        private List<ReserveVO> reserve;
 }

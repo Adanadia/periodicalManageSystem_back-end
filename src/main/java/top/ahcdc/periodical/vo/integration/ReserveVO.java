@@ -7,12 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PeriodicalVO {
-    private String ISSN;
+public class ReserveVO {
     private String periodicalName;
-    private String periodicalCover;
-    private  String dueDate;
+    private  String reserveDate;
     private int volume;
     private int year;
     private int stage;
-}//借阅的VO
+}
