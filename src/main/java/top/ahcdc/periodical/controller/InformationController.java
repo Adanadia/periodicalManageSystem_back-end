@@ -37,7 +37,7 @@ public class InformationController {
         }
         return CommonResponse.createForSuccess(mainPageInfo);
     }
-    @PutMapping("/information")
+    @PutMapping("/information/return")
     public CommonResponse<Object> returnbooks(@RequestParam("periodical_name") String periodical_name,
                                               @RequestParam("volume") int volume,
                                               @RequestParam("year") int year,
