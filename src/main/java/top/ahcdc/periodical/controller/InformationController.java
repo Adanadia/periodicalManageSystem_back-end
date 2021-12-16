@@ -52,6 +52,5 @@ public class InformationController {
                 return CommonResponse.createForSuccessMessage("归还成功！已退还押金");
             }
             else return CommonResponse.createForError("逾期归还，押金不予退还");
-
         }
 }

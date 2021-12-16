@@ -124,4 +124,20 @@ public class ReserveServiceImpl implements ReserveService {
         }
         return searchRes;
     }
+    public void DeleteReserve(String pNname, String userNum, int year, int stage, int volume){
+        QueryWrapper<PeriodicalReserveEntity> periodicalReserveQueryWrapper=new QueryWrapper<>();
+        periodicalReserveQueryWrapper.eq("user_num",userNum)
+                .eq("periodical_name",pNname)
+                .eq("volume",volume)
+                .eq("year",year)
+                .eq("stage",stage);
+        periodicalReserveMapper.delete(periodicalReserveQueryWrapper);
+    }
+    public boolean getByUserNum(String userNum){
+        QueryWrapper<PeriodicalReserveEntity> periodicalReserveQueryWrapper= new QueryWrapper<>();
+        periodicalReserveQueryWrapper.eq("user_num",userNum);
+        PeriodicalReserveEntity periodicalReserveEntity=periodicalReserveMapper.selectOne(periodicalReserveQueryWrapper);
+        if(periodicalReserveEntity!=null) return true;
+        else return false;
+    }
 }

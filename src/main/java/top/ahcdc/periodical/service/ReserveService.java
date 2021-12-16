@@ -20,4 +20,6 @@ public interface ReserveService {
     List<PeriodicalBorrowVO> ReserveSearch(int type,String search_content);
     List<PeriodicalContentEntity> detailDisp(String pName, int year, int volume, int stage);
     void ReserveBooks(String pNname, String userNum, int year, int stage, int volume);
+    void DeleteReserve(String pNname, String userNum, int year, int stage, int volume);
+    boolean getByUserNum(String userNum);
 }
