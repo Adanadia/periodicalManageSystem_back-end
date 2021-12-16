@@ -13,7 +13,7 @@ import lombok.*;
 @Data
 @TableName(value = "periodical_catalogue")
 public class PeriodicalCatalogueEntity {
-    @TableId(value = "periodical_name",type = IdType.INPUT)
+    @TableField(value = "periodical_name")
     private String periodicalName;
     @TableField(value = "ISSN")
     private String ISSN;

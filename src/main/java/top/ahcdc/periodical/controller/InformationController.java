@@ -33,7 +33,7 @@ public class InformationController {
             userNum = tokenInfo.getClaim("userNum").asString();
             mainPageInfo = informationService.getMainPageInfo(userNum);
         }catch (NullPointerException e){
-            return CommonResponse.createForError("用户不存在");
+            return CommonResponse.createForError("");
         }
         return CommonResponse.createForSuccess(mainPageInfo);
     }
