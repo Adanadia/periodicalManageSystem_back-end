@@ -7,10 +7,8 @@ import top.ahcdc.periodical.entity.*;
 import top.ahcdc.periodical.mapper.*;
 import top.ahcdc.periodical.service.ReserveService;
 import top.ahcdc.periodical.utils.CalendarString;
-import top.ahcdc.periodical.vo.BorrowPageVO;
 import top.ahcdc.periodical.vo.ReservePageVO;
 import top.ahcdc.periodical.vo.integration.PeriodicalBorrowVO;
-import top.ahcdc.periodical.vo.integration.PeriodicalNotBorrowVO;
 import top.ahcdc.periodical.vo.integration.UserInfoVO;
 
 import java.util.Calendar;
@@ -133,11 +131,15 @@ public class ReserveServiceImpl implements ReserveService {
                 .eq("stage",stage);
         periodicalReserveMapper.delete(periodicalReserveQueryWrapper);
     }
-    public boolean getByUserNum(String userNum){
+    public boolean getByUserNum(String userNum,String pName){
         QueryWrapper<PeriodicalReserveEntity> periodicalReserveQueryWrapper= new QueryWrapper<>();
         periodicalReserveQueryWrapper.eq("user_num",userNum);
-        PeriodicalReserveEntity periodicalReserveEntity=periodicalReserveMapper.selectOne(periodicalReserveQueryWrapper);
-        if(periodicalReserveEntity!=null) return true;
-        else return false;
+        List<PeriodicalReserveEntity> periodicalReserveList=periodicalReserveMapper.selectList(periodicalReserveQueryWrapper);
+        for(PeriodicalReserveEntity pR:periodicalReserveList){
+            if(pR.getPeriodicalName().equals(pName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -88,6 +88,7 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     public String getCover(String name, int year, int volume, int stage) {
         QueryWrapper<PeriodicalRegisterEntity> queryWrapper = new QueryWrapper<>();
+
         queryWrapper.eq("periodical_name", name)
                     .eq("year", year)
                     .eq("volume", volume)

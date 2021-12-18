@@ -9,6 +9,8 @@ import top.ahcdc.periodical.mapper.PeriodicalSubscriptionMapper;
 import top.ahcdc.periodical.service.AdminOperateService;
 import top.ahcdc.periodical.utils.JWTUtils;
 
+import java.util.Calendar;
+
 @RestController
 public class AdminOperateController {
     @Autowired
@@ -21,8 +23,8 @@ public class AdminOperateController {
             @RequestParam("public_cycle") String public_cycle,@RequestHeader("Authorization") String token){
         DecodedJWT tokenInfo= JWTUtils.getTokenInfo(token);
         String KEY=tokenInfo.getClaim("key").asString();
-        if(!KEY.equals("0102qqqwww")) return CommonResponse.createForError();
-        if(subscription_year<2021){
+        if(!KEY.equals("adminIdentity")) return CommonResponse.createForError(10,"您不是管理员,请重新登录");
+        if(subscription_year< Calendar.getInstance().get(Calendar.YEAR)){
            return CommonResponse.createForError("不能征订以前的期刊");
         }
         adminOperateService.PeriodicalSubscribe(mailing_code,ISSN,CN,periodical_name,subscription_year,public_cycle);
@@ -32,7 +34,7 @@ public class AdminOperateController {
     public CommonResponse<Object> BookComes(@RequestParam("mailing_code") String mailing_code,@RequestParam("stage") int stage,@RequestParam("deposit") double deposit,@RequestHeader("Authorization") String token){
         DecodedJWT tokenInfo= JWTUtils.getTokenInfo(token);
         String KEY=tokenInfo.getClaim("key").asString();
-        if(!KEY.equals("0102qqqwww")) return CommonResponse.createForError();
+        if(!KEY.equals("adminIdentity")) return CommonResponse.createForError(10,"您不是管理员,请重新登录");
         PeriodicalSubscriptionEntity periodicalSubscriptionEntity= adminOperateService.GetSubscriptionByMailingCode(mailing_code);
         if(periodicalSubscriptionEntity==null||periodicalSubscriptionEntity.getSubscriptionYear()!=2021){
             return CommonResponse.createForError("入库数据出错！不存在本年度的征订数据");

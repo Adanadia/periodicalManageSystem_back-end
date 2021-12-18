@@ -46,13 +46,15 @@ public class ReserveController {
 
         return CommonResponse.createForSuccess(reserveService.detailDisp(pName, year, volume, stage));
     }
-        @PostMapping("/reserve/search/reservebooks")//默认前端传来的数据为未借出的且余额充足
+    @PostMapping("/reserve/search/reservebooks")
     public CommonResponse<Object> reserveBooks(@RequestParam("periodical_name") String pName, @RequestParam("volume") int volume,
                                               @RequestParam("stage") int stage, @RequestParam("year") int year,
                                               @RequestHeader("Authorization") String token) {
         DecodedJWT tokenInfo = JWTUtils.getTokenInfo(token);
         String userNum = tokenInfo.getClaim("userNum").asString();
-        if(reserveService.getByUserNum(userNum)) return CommonResponse.createForError("不能重复预定");
+        if(reserveService.getByUserNum(userNum,pName)) {
+            return CommonResponse.createForError("不能重复预定");
+        }
         reserveService.ReserveBooks(pName, userNum, year, stage, volume);
         return CommonResponse.createForSuccessMessage("预定成功！");
     }

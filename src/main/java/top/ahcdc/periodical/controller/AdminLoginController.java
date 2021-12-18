@@ -33,8 +33,7 @@ public class AdminLoginController {
         Map<String,String> adminInfoMap = new HashMap<>();
         if(admin.getPassword().equals(password)){
             adminInfoMap.put("Id",admin.getId());
-            adminInfoMap.put("password",admin.getPassword());
-            adminInfoMap.put("key","0102qqqwww");
+            adminInfoMap.put("key","adminIdentity");
             String token = JWTUtils.getToken(adminInfoMap);
             response.setHeader("Authorization",token);
             return CommonResponse.createForSuccess("登录成功",new Authorization(token));

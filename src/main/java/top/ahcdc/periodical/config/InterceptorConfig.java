@@ -10,7 +10,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
     private static final String[] EXCLUDE_PATHS = {
             "/userlogin",
             "/userlogin/**",
-            "/"
+            "/",
+            "/admin",
+            "/admin/*"
     };
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
