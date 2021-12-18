@@ -21,5 +21,5 @@ public interface ReserveService {
     List<PeriodicalContentEntity> detailDisp(String pName, int year, int volume, int stage);
     void ReserveBooks(String pNname, String userNum, int year, int stage, int volume);
     void DeleteReserve(String pNname, String userNum, int year, int stage, int volume);
-    boolean getByUserNum(String userNum);
+    boolean getByUserNum(String userNum,String pName);
 }
