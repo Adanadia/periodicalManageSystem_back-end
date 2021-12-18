@@ -24,7 +24,9 @@ public class BookDestinationController {
         }
         else if(type==2){
             BookDestination_PeriodicalPageVO bookDestination_periodicalPageVO=bookDestinationService.getBookDestination_Periodical(search_content);
-            if(bookDestination_periodicalPageVO.getBookDestination_periodicalPageVOList().isEmpty()) return CommonResponse.createForError("无查询结果");
+            if(bookDestination_periodicalPageVO.getBookDestination_periodicalPageVOList().isEmpty()) {
+                return CommonResponse.createForError("无查询结果");
+            }
             return CommonResponse.createForSuccess(bookDestination_periodicalPageVO);
         }
         return CommonResponse.createForError("type类型错误");
