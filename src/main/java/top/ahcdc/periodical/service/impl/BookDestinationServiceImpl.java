@@ -53,7 +53,7 @@ public class BookDestinationServiceImpl implements BookDestinationService {
         List<BorrowTabelEntity> borrowTabelEntities=borrowTableMapper.selectList(borrowTabelQueryWrapper);
         for(BorrowTabelEntity borrowTabelEntity:borrowTabelEntities){
             QueryWrapper<UserEntity> userQueryWrapper=new QueryWrapper<>();
-            userQueryWrapper.eq("user_num",borrowTabelEntity.getUserNum());
+            userQueryWrapper.like("user_num",borrowTabelEntity.getUserNum());
             UserEntity userEntity=userMapper.selectOne(userQueryWrapper);
             bookDestination_periodicalVOList.add(new BookDestination_PeriodicalVO(
                         userEntity.getUserName(),
