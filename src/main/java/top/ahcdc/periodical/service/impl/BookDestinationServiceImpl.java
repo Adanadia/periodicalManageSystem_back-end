@@ -48,11 +48,11 @@ public class BookDestinationServiceImpl implements BookDestinationService {
     @Override
     public BookDestination_PeriodicalPageVO getBookDestination_Periodical(String search_content) {
         QueryWrapper<BorrowTabelEntity> borrowTabelQueryWrapper=new QueryWrapper<>();
-        QueryWrapper<UserEntity> userQueryWrapper=new QueryWrapper<>();
         List<BookDestination_PeriodicalVO> bookDestination_periodicalVOList=new LinkedList<>();
         borrowTabelQueryWrapper.eq("periodical_name",search_content);
         List<BorrowTabelEntity> borrowTabelEntities=borrowTableMapper.selectList(borrowTabelQueryWrapper);
         for(BorrowTabelEntity borrowTabelEntity:borrowTabelEntities){
+            QueryWrapper<UserEntity> userQueryWrapper=new QueryWrapper<>();
             userQueryWrapper.eq("user_num",borrowTabelEntity.getUserNum());
             UserEntity userEntity=userMapper.selectOne(userQueryWrapper);
             bookDestination_periodicalVOList.add(new BookDestination_PeriodicalVO(
