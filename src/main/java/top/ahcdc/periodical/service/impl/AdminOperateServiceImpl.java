@@ -12,6 +12,7 @@ import top.ahcdc.periodical.mapper.PeriodicalSubscriptionMapper;
 import top.ahcdc.periodical.service.AdminOperateService;
 
 import javax.validation.constraints.Null;
+import java.util.List;
 
 @Service
 public class AdminOperateServiceImpl implements AdminOperateService {
@@ -48,21 +49,22 @@ public class AdminOperateServiceImpl implements AdminOperateService {
         PeriodicalSubscriptionEntity periodicalSubscriptionEntity=periodicalSubscriptionMapper.selectOne(periodicalSubscriptionQueryWrapper);
         return periodicalSubscriptionEntity;
     }
-    public PeriodicalRegisterEntity GetRegisterByPeriodicalName(String periodical_name){
+    public List<PeriodicalRegisterEntity> GetRegisterByPeriodicalName(String periodical_name){
         QueryWrapper<PeriodicalRegisterEntity> periodicalRegisterQueryWrapper=new QueryWrapper<>();
-        periodicalRegisterQueryWrapper.eq("periodical_name",periodical_name);
-        PeriodicalRegisterEntity periodicalRegisterEntity=periodicalRegisterMapper.selectOne(periodicalRegisterQueryWrapper);
-        return periodicalRegisterEntity;
+        periodicalRegisterQueryWrapper.eq("periodical_name",periodical_name)
+                .eq("year",2021);
+        List<PeriodicalRegisterEntity> periodicalRegisterEntities=periodicalRegisterMapper.selectList(periodicalRegisterQueryWrapper);
+        return periodicalRegisterEntities;
     }
     public void PeriodicalComes(String mailing_code,int stage,double deposit){
         QueryWrapper<PeriodicalCatalogueEntity> periodicalCatalogueQueryWrapper=new QueryWrapper<>();
         periodicalCatalogueQueryWrapper.eq("mailing_code",mailing_code);
         PeriodicalCatalogueEntity periodicalCatalogueEntity=periodicalCatalogueMapper.selectOne(periodicalCatalogueQueryWrapper);
-        PeriodicalRegisterEntity periodicalRegisterEntity=GetRegisterByPeriodicalName(periodicalCatalogueEntity.getPeriodicalName());
+        List<PeriodicalRegisterEntity> periodicalRegisterEntity=GetRegisterByPeriodicalName(periodicalCatalogueEntity.getPeriodicalName());
         periodicalRegisterMapper.insert(new PeriodicalRegisterEntity(
-                periodicalRegisterEntity.getPeriodicalName(),
-                2021-periodicalRegisterEntity.getYear()+periodicalRegisterEntity.getVolume(),
-                2021, stage, periodicalRegisterEntity.getPeriodicalCover(),deposit
+                periodicalRegisterEntity.get(0).getPeriodicalName(),
+                2021-periodicalRegisterEntity.get(0).getYear()+periodicalRegisterEntity.get(0).getVolume(),
+                2021, stage, periodicalRegisterEntity.get(0).getPeriodicalCover(),deposit
         ));
     }
 }
