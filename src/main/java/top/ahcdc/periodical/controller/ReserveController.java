@@ -58,12 +58,15 @@ public class ReserveController {
         reserveService.ReserveBooks(pName, userNum, year, stage, volume);
         return CommonResponse.createForSuccessMessage("预定成功！");
     }
-    @DeleteMapping("/reserve/delete")
-    public CommonResponse<Object> deleteReserve(@RequestParam("periodical_name") String pName, @RequestParam("volume") int volume,
-                                                @RequestParam("stage") int stage, @RequestParam("year") int year,
+    @PutMapping("/reserve/delete")
+    public CommonResponse<Object> deleteReserve(@RequestParam("periodical_name") String pName,
+                                                @RequestParam("volume") int volume,
+                                                @RequestParam("stage") int stage,
+                                                @RequestParam("year") int year,
                                                 @RequestHeader("Authorization") String token){
         DecodedJWT tokenInfo = JWTUtils.getTokenInfo(token);
         String userNum = tokenInfo.getClaim("userNum").asString();
+        System.out.println(pName);
         reserveService.DeleteReserve(pName,userNum,year,stage,volume);
         return CommonResponse.createForSuccessMessage("已取消预定");
     }

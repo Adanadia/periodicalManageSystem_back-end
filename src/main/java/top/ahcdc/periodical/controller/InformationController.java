@@ -47,7 +47,7 @@ public class InformationController {
             String userNum=tokenInfo.getClaim("userNum").asString();
             String dateString=informationService.returnPeriodical(periodical_name,stage,volume,year,userNum);
             Calendar current=Calendar.getInstance();
-            if(calendarString.SToC(dateString).compareTo(current)==1){
+            if(calendarString.SToC(dateString).compareTo(current) > 0){
                 informationService.ReturnMoney(periodical_name,stage,volume,year,userNum);
                 return CommonResponse.createForSuccessMessage("归还成功！已退还押金");
             }

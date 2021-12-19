@@ -87,7 +87,14 @@ public class InformationServiceImpl implements InformationService {
                                 .eq("stage",stage)
                                 .eq("volume",volume)
                                 .eq("year",year);
-        BorrowTabelEntity borrowTabelEntity=borrowTableMapper.selectOne(borrowTabelQueryWrapper);
+        List<BorrowTabelEntity> borrowTabelEntityList=borrowTableMapper.selectList(borrowTabelQueryWrapper);
+        BorrowTabelEntity borrowTabelEntity = null;
+        for(BorrowTabelEntity borrowTabel:borrowTabelEntityList){
+            if(borrowTabel.getReturnDate() == null){
+                borrowTabelEntity = borrowTabel;
+                break;
+            }
+        }
         borrowTabelEntity.setReturnDate(calendarString.CToS(current));
         borrowTableMapper.update(borrowTabelEntity,borrowTabelQueryWrapper);
         return borrowTabelEntity.getDueDate();
