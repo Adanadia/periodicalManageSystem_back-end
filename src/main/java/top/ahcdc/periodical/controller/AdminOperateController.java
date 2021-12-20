@@ -36,7 +36,7 @@ public class AdminOperateController {
         String KEY=tokenInfo.getClaim("key").asString();
         if(!KEY.equals("adminIdentity")) return CommonResponse.createForError(10,"您不是管理员,请重新登录");
         PeriodicalSubscriptionEntity periodicalSubscriptionEntity= adminOperateService.GetSubscriptionByMailingCode(mailing_code);
-        if(periodicalSubscriptionEntity==null||periodicalSubscriptionEntity.getSubscriptionYear()!=2021){
+        if(periodicalSubscriptionEntity==null||periodicalSubscriptionEntity.getSubscriptionYear()!=Calendar.getInstance().get(Calendar.YEAR)){
             return CommonResponse.createForError("入库数据出错！不存在本年度的征订数据");
         }//入库的期刊不是订的2021年的或者没有订阅记录
         else {
